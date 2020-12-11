@@ -5,14 +5,14 @@ ext {
     bintrayRepo = 'RichLinkPreview'
     bintrayName = 'RichLinkPreview'
 
-    publishedGroupId = 'io.github.ponnamkarthik'
+    publishedGroupId = 'io.github.notchdesign'
     libraryName = 'richlinkpreview'
     artifact = 'richlinkpreview'
 
     libraryDescription = 'A Rich Link Preview Library for Android'
 
-    siteUrl = 'https://github.com/PonnamKarthik/RichLink-Preview'
-    gitUrl = 'https://github.com/PonnamKarthik/RichLink-Preview.git'
+    siteUrl = 'https://github.com/notchdesign/RichLink-Preview'
+    gitUrl = 'https://github.com/notchdesign/RichLink-Preview.git'
 
     libraryVersion = '1.0.9'
 
