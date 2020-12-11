@@ -65,66 +65,51 @@ public class RichLinkView extends RelativeLayout {
     }
 
 
-    public void initView() {
-        if(findLinearLayoutChild() != null) {
-            this.view = findLinearLayoutChild();
-        } else  {
-            this.view = this;
-            inflate(context, R.layout.link_layout,this);
-        }
+public void initView() {
+    this.view = this;
+    inflate(context, R.layout.include_link_preview_post_item,this);
+    linearLayout = (LinearLayout) findViewById(R.id.llMainIncRowLinPreviewPost);
+    imageView = (AppCompatImageView) findViewById(R.id.ivPreviewIncRowLinPreviewPost);
+    textViewTitle = (AppCompatTextView) findViewById(R.id.tvTitleIncRowLinPreviewPost);
+    textViewUrl = (AppCompatTextView) findViewById(R.id.tvLinkIncRowLinPreviewPost);
+  }
 
-        linearLayout = (LinearLayout) findViewById(R.id.rich_link_card);
-        imageView = (ImageView) findViewById(R.id.rich_link_image);
-        textViewTitle = (TextView) findViewById(R.id.rich_link_title);
-        textViewDesp = (TextView) findViewById(R.id.rich_link_desp);
-        textViewUrl = (TextView) findViewById(R.id.rich_link_url);
+private void setData(){
+    if(meta.getImageurl().equals("") || meta.getImageurl().isEmpty()) {
+        imageView.setVisibility(GONE);
+    } else {
+        imageView.setVisibility(VISIBLE);
+        Glide.with(context).load(meta.getImageurl()).into(imageView);
+    }
 
+    if(meta.getTitle().isEmpty() || meta.getTitle().equals("")) {
+        textViewTitle.setVisibility(GONE);
+    } else {
+        textViewTitle.setVisibility(VISIBLE);
+        textViewTitle.setText(meta.getTitle());
+    }
+    if(meta.getUrl().isEmpty() || meta.getUrl().equals("")) {
+        textViewUrl.setVisibility(GONE);
+    } else {
+        textViewUrl.setVisibility(VISIBLE);
+        textViewUrl.setText(meta.getUrl());
+    }
 
-        if(meta.getImageurl().equals("") || meta.getImageurl().isEmpty()) {
-            imageView.setVisibility(GONE);
-        } else {
-            imageView.setVisibility(VISIBLE);
-            Picasso.get()
-                    .load(meta.getImageurl())
-                    .into(imageView);
-        }
-
-        if(meta.getTitle().isEmpty() || meta.getTitle().equals("")) {
-            textViewTitle.setVisibility(GONE);
-        } else {
-            textViewTitle.setVisibility(VISIBLE);
-            textViewTitle.setText(meta.getTitle());
-        }
-        if(meta.getUrl().isEmpty() || meta.getUrl().equals("")) {
-            textViewUrl.setVisibility(GONE);
-        } else {
-            textViewUrl.setVisibility(VISIBLE);
-            textViewUrl.setText(meta.getUrl());
-        }
-        if(meta.getDescription().isEmpty() || meta.getDescription().equals("")) {
-            textViewDesp.setVisibility(GONE);
-        } else {
-            textViewDesp.setVisibility(VISIBLE);
-            textViewDesp.setText(meta.getDescription());
-        }
-
-
-        linearLayout.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(isDefaultClick) {
-                    richLinkClicked();
+    linearLayout.setOnClickListener(new OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if(isDefaultClick) {
+                richLinkClicked();
+            } else {
+                if(richLinkListener != null) {
+                    richLinkListener.onClicked(view, meta);
                 } else {
-                    if(richLinkListener != null) {
-                        richLinkListener.onClicked(view, meta);
-                    } else {
-                        richLinkClicked();
-                    }
+                    richLinkClicked();
                 }
             }
-        });
-
-    }
+        }
+    });
+}
 
 
     private void richLinkClicked() {
@@ -166,8 +151,8 @@ public class RichLinkView extends RelativeLayout {
                 if(!meta.getTitle().isEmpty() || !meta.getTitle().equals("")) {
                     viewListener.onSuccess(true);
                 }
-
-                initView();
+                
+                setData();
             }
 
             @Override
